@@ -91,16 +91,16 @@ function playGame() {
     document.getElementById("humanPoints").innerHTML = roundHumanScore;
     document.getElementById("computerPoints").innerHTML = roundComputerScore;
     console.log(`Final Score: Human - ${humanScore}, Computer - ${computerScore}`)
-        if (humanScore > computerScore) {
+        if (roundHumanScore > roundComputerScore) {
             return "Human Wins the Game!";
-        } else if (computerScore > humanScore) {
+        } else if (roundComputerScore > roundHumanScore) {
             return "Computer Wins the Game!";
         } else {
             return "It's a Tie!!";
         }
     }
 
-document.getElementById("playBtn").addEventListener("click", () => {
+    document.getElementById("playBtn").addEventListener("click", () => {
     let finalMessage = playGame();
     console.log(finalMessage);
     document.getElementById("winner").innerHTML = finalMessage;});
