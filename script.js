@@ -15,34 +15,9 @@ else {
 }
 }
 
-//
-//
-
-
-// Step 3 : Get Human Input
-//
-//
-
-function getHumanChoice() {
-    let input = prompt("Select Rock, Paper, or Scissors!!!")
-    formattedInput = input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
-    return formattedInput;
-}
-//
-//
-
-
-// Step 4 - Player Score Variables
-// In Global Scope
-//
-
 let humanScore = 0;
 
 let computerScore = 0;
-
-// Step 5 - Logic to Play SIngle Round
-//
-//
 
 function playRound(humanChoice, computerChoice) {
     if (humanChoice === computerChoice) {
@@ -66,42 +41,81 @@ function playRound(humanChoice, computerChoice) {
     }
 }
 
-//Step 6: Logic to play entire game with 5 rounds
-// declare playRound and score variables in this function
-// call playRound 5 times to play 5 rounds
-// 
+let roundCount = 0;
 
-function playGame() {
-    let roundHumanScore = 0;
-    let roundComputerScore = 0;
+function getHumanChoice(choice) {
+    if(roundCount >= 5) return;
+    const compChose = getComputerChoice();
+    console.log(`You Chose : ${choice}`);
+    const result = playRound(choice, compChose);
+    para.textContent = `You Chose ${choice}, Computer Chose ${compChose}, Result : ${result}`;
 
-    for (let i=1; i<=5; i++) {
-    let computerChoice = getComputerChoice();
-    let humanChoice = getHumanChoice();
-    let result = playRound(humanChoice, computerChoice);
-    console.log(result);
+    roundCount++
 
-    if (result.includes("Human Wins")) {
-        roundHumanScore++;
+    document.getElementById("humanPoints").textContent = `Human Score: ${humanScore}`
+    document.getElementById("computerPoints").textContent = `Computer Score: ${computerScore}`
+if(roundCount === 5) {
+    let finalMessage = '';
+    if(humanScore > computerScore) {
+        finalMessage = 'Human';
+    } else if(computerScore > humanScore) {
+        finalMessage = "Computer";
+    } else {
+        finalMessage = "It's a Tie!!";
     }
-    else if (result.includes("Computer Wins")) {
-        roundComputerScore++;
+    document.getElementById("winner").textContent = `This Round is Over, and The WINNER is: ${finalMessage}`
+}
+
+setTimeout (() => {resetGame()}, 8000);
+}
+
+function resetGame() {
+    if(roundCount === 5) {
+    humanScore = 0;
+    computerScore = 0;
+    roundCount = 0;
+    para.textContent = '';
+    document.getElementById("humanPoints").textContent = "Human Score: 0";
+    document.getElementById("computerPoints").textContent = "Computer Score: 0";
+    document.getElementById("winner").textContent = "Winner:";
     }
 }
-    document.getElementById("humanPoints").innerHTML = roundHumanScore;
-    document.getElementById("computerPoints").innerHTML = roundComputerScore;
-    console.log(`Final Score: Human - ${humanScore}, Computer - ${computerScore}`)
-        if (roundHumanScore > roundComputerScore) {
-            return "Human Wins the Game!";
-        } else if (roundComputerScore > roundHumanScore) {
-            return "Computer Wins the Game!";
-        } else {
-            return "It's a Tie!!";
-        }
-    }
 
-    document.getElementById("playBtn").addEventListener("click", () => {
-    let finalMessage = playGame();
-    console.log(finalMessage);
-    document.getElementById("winner").innerHTML = finalMessage;});
+
+// UI for the player
+const btnDiv = document.createElement('div');
+const buttonOne = document.createElement('button');
+const buttonTwo = document.createElement('button');
+const buttonThree = document.createElement('button');
+
+btnDiv.id = 'btnDiv'
+buttonOne.id = 'rock';
+buttonTwo.id = 'paper';
+buttonThree.id = 'scissors';
+
+buttonOne.textContent = "Rock";
+buttonTwo.textContent = "Paper";
+buttonThree.textContent = "Scissors";
+
+btnDiv.appendChild(buttonOne);
+btnDiv.appendChild(buttonTwo);
+btnDiv.appendChild(buttonThree);
+
+btnDiv.setAttribute('style', 'margin-bottom:20px');
+
+const targetBtn = document.getElementById('playBtn');
+
+document.body.insertBefore(btnDiv, targetBtn);
+
+buttonOne.addEventListener('click', () => getHumanChoice('Rock'));
+buttonTwo.addEventListener('click', () => getHumanChoice('Paper'));
+buttonThree.addEventListener('click', () => getHumanChoice('Scissors'));
+
+const resultDiv = document.createElement('div');
+resultDiv.id = 'resultDiv';
+const para = document.createElement('p');
+para.classList = 'resultPara';
+
+resultDiv.appendChild(para);
+document.body.appendChild(resultDiv);
 
